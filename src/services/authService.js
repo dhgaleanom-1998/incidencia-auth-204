@@ -18,23 +18,6 @@ function writeLog(level, service, message) {
 async function login(username, password) {
     try {
 
-        // Simulación de la incidencia reportada:
-        // el módulo actualizado presenta un timeout
-        // durante la consulta de usuarios.
-
-        if (username === 'jgarcia') {
-
-            await new Promise(resolve => setTimeout(resolve, 7000));
-
-            writeLog(
-                'ERROR',
-                'DBConnection',
-                'Timeout while querying table "users"'
-            );
-
-            throw new Error('Database query timeout');
-        }
-
         const result = await pool.query(
             `SELECT * FROM users
              WHERE username = $1
