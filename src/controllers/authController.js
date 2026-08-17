@@ -12,23 +12,34 @@ async function login(req, res) {
     try {
         const result = await authService.login(username, password);
 
-        if (!result) {
-            return res.status(401).json({
-                error: 'Credenciales no válidas'
-            });
-        }
+     if (!result) {
+
+    console.warn(
+        '2024-11-18 08:34:22 WARN AuthController - Login attempt failed for user: ' + username
+    );
+
+    return res.status(401).json({
+        error: 'Credenciales no válidas'
+    });
+}
 
         return res.status(200).json(result);
 
     } catch (error) {
-        console.error(
-            `${new Date().toISOString()} ERROR AuthController - ${error.message}`
-        );
 
-        return res.status(500).json({
-            error: 'Error interno del servidor'
-        });
+    console.warn(
+        '2024-11-18 08:34:22 WARN AuthController - Login attempt failed for user: ' + username
+    );
+
+    console.error(
+        `${new Date().toISOString()} ERROR AuthController - ${error.message}`
+    );
+
+    return res.status(500).json({
+        error: 'Credenciales no válidas. Inténtelo nuevamente.'
+    });
     }
+
 }
 
 module.exports = {
