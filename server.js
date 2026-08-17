@@ -1,5 +1,8 @@
 const express = require('express');
+require('dotenv').config();
+
 const pool = require('./src/config/database');
+const authRoutes = require('./src/routes/authRoutes');
 
 const app = express();
 
@@ -17,7 +20,10 @@ app.get('/health', async (req, res) => {
             timestamp: result.rows[0].now
         });
     } catch (error) {
-        console.error('Database connection error:', error.message);
+        console.error(
+            'Database connection error:',
+            error.message
+        );
 
         res.status(500).json({
             status: 'ERROR',
@@ -26,6 +32,10 @@ app.get('/health', async (req, res) => {
     }
 });
 
+app.use('/api/auth', authRoutes);
+
 app.listen(PORT, () => {
-    console.log(`Servidor ejecutándose en http://localhost:${PORT}`);
+    console.log(
+        `Servidor ejecutándose en http://localhost:${PORT}`
+    );
 });
